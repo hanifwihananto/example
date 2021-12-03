@@ -1,53 +1,44 @@
 import logo from './logo.svg';
 import './App.css';
 import { Component } from 'react';
+import List from './List';
 
-class Toggle extends Component {
-  constructor(props){
+class App extends Component {
+  
+  constructor(props) {
     super(props)
     this.state = {
-      toggleStatus: true
+      todoItem: '',
+      items: []
     }
-
-    this.handleClick = this.handleClick.bind(this)
   }
 
-  handleClick(){
-    this.setState(state => ({
-      toggleStatus: !state.toggleStatus
-    }))
+  handleSubmit = (event) => {
+    event.preventDefault()
+    this.setState({
+      items     : this.state.items.concat([this.state.todoItem]),
+      // todoItem  : '' 
+    })
   }
 
-  render() {
+  handleChange = (event) => {
+    this.setState({
+      todoItem: event.target.value 
+    })
+  }
+
+  render(){
     return (
-      <button onClick={this.handleClick}> 
-        {this.state.toggleStatus ? 'ON' : 'OFF'}
-        <p> Kondisi {this.state.toggleStatus ? 'Menyala' : 'Mati'} </p>
-      </button>
-    )
-  }
-}
+      <div>
+        <form onSubmit={this.handleSubmit}> 
+          <input value={this.state.todoItems} onChange={this.handleChange}/>
+          <button>Add</button>
+        </form>
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Toggle />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+        <List items={this.state.items} />
+      </div>
+    );
+  }
 }
 
 export default App;
