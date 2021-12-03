@@ -1,15 +1,40 @@
 import logo from './logo.svg';
 import './App.css';
+import { Component } from 'react';
 
-// Component -> Properties
+// State
 
-function Biodata(props){
-  return <span> Usia {props.age} </span>
+class Timer extends Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      time: props.start
+    }
+  }
+  
+  // Lifecycle
+  componentDidMount(){
+    this.addInterval = setInterval( () => this.increase(), 1000);
+  }
+
+  componentWillUnmount(){
+    clearInterval(this.addInterval)
+  }
+
+  increase(){
+    // Update State Setiap Detik 
+    this.setState((state, props) => ({
+      time: parseInt(state.time) + 1
+    }))
+  }
+
+  render(){
+    return (
+      <div> {this.state.time} Detik </div> 
+    )
+  }
 }
 
-function Greeting(props){
-  return <h1> Hallo {props.name} - < Biodata age={props.age}/> </h1>
-}
 
 
 function App() {
@@ -17,8 +42,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <Greeting name="Hanif" age="17"/>
-        <Greeting name="Nova" age="16"/>
+        <Timer start="0"/>
         <p>
           Edit <code>src/App.js</code> and save to reload.
         </p>
